@@ -3,58 +3,79 @@
 [![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-AIpmt is a comprehensive Python toolkit designed for **predictive modeling and feature analysis** in precision medicine applications. Built with flexibility, visualization, and educational use in mind, it helps students, researchers, and practitioners quickly test classification models, evaluate features, and visualize results with minimal setup.
+AIpmt is a Python toolkit for **predictive modeling, feature selection, and visualization** in precision medicine and related fields.  
+It is designed for **students, researchers, and practitioners** who want to quickly test classification models, analyze features, and visualize performance with minimal setup.
+
+---
+
+## 👨‍💻 Author
+
+**Farhan Labib**  
+- Undergraduate Computer Science Researcher  
+- Passionate about Machine Learning, Data Science, and Precision Medicine  
+- [LinkedIn](https://www.linkedin.com) • [GitHub](https://github.com/yourusername)  
+
+---
 
 ## 🚀 Features
 
-- **Multiple ML Models**: Logistic Regression, SVM (easily extendable)
-- **Advanced Feature Selection**: ANOVA F-test, Chi-squared, incremental feature selection
-- **Comprehensive Metrics**: Accuracy, Sensitivity, Specificity, MCC, F1-score
-- **Rich Visualizations**: 
-  - ROC and Precision-Recall curves with cross-validation
-  - Feature correlation analysis
-  - PCA/t-SNE clustering plots
-  - Confusion matrices
-  - Feature selection performance tracking
-- **Cross-Validation**: Built-in k-fold cross-validation with stratification
-- **Easy Integration**: Clean API designed for research workflows
+- **Machine Learning Models**  
+  - Logistic Regression, Support Vector Machines (SVM)  
+  - Easy to extend with other scikit-learn models  
+
+- **Feature Selection**  
+  - ANOVA F-test, Chi-Squared  
+  - Incremental Feature Selection (IFS) with cross-validation  
+
+- **Evaluation Metrics**  
+  - Accuracy, Sensitivity, Specificity, F1-score, MCC  
+
+- **Visualizations**  
+  - ROC & PRC curves with cross-validation  
+  - Feature correlation plots  
+  - PCA / t-SNE clustering  
+  - Confusion matrices  
+  - Performance vs. number of features  
+
+- **Cross-Validation**  
+  - Built-in stratified k-fold CV  
+
+- **Clean API**  
+  - Easy to integrate into research workflows  
+
+---
 
 ## 📦 Installation
 
 ### Prerequisites
-- Python 3.8 or higher
-- pip package manager
+- Python **3.8+**
+- `pip` package manager
 
-### Quick Install
+### Setup
 
-1. **Clone the repository:**
 ```bash
+# Clone the repo
 git clone https://github.com/yourusername/AIpmt.git
 cd AIpmt
-```
 
-2. **Create virtual environment:**
-```bash
+# Create virtual environment
 python -m venv aipmt_env
 
+# Activate it
 # Windows
 aipmt_env\Scripts\activate
-
 # macOS/Linux
 source aipmt_env/bin/activate
-```
 
-3. **Install dependencies:**
-```bash
+# Install dependencies
 pip install -r requirements.txt
+
+# Install package in editable mode
 pip install -e .
-```
-
-## 🔬 Quick Start
-
-### Basic Usage
-
-```python
+🔬 Quick Start
+Example Usage
+python
+Copy code
 import pandas as pd
 from sklearn.datasets import load_breast_cancer
 from aipmt import AIpmt
@@ -65,148 +86,111 @@ X = pd.DataFrame(data.data, columns=data.feature_names)
 y = pd.Series(data.target)
 
 # Initialize AIpmt
-classifier = AIpmt(X, y)
+clf = AIpmt(X, y)
 
-# Fit with feature selection
-classifier.fit(fs_method="ANOVA", ifs_method="LR", ifs_grid=True, ifs_cv=5)
+# Train with feature selection
+clf.fit(fs_method="ANOVA", ifs_method="LR", ifs_grid=True, ifs_cv=5)
 
-# Generate visualizations
-classifier.plot_correlation(X, y)
-classifier.plot_cluster(X, y, cluster='PCA')
-classifier.plot_lines(classifier.ifs_results)
-```
+# Visualizations
+clf.plot_correlation(X, y)
+clf.plot_cluster(X, y, cluster="PCA")
+clf.plot_lines(clf.ifs_results)
+📊 Visualization Examples
+ROC Curves: Cross-validated ROC with confidence intervals
 
-### Advanced Usage
+Precision-Recall Curves: Useful for imbalanced data
 
-```python
-# Custom feature selection and model training
-classifier.fit(
-    fs_method="Chi2",           # Feature selection method
-    ifs_method="SVM",           # Model for incremental selection
-    ifs_grid=True,              # Enable grid search
-    ifs_cv=10                   # 10-fold cross-validation
-)
+Feature Correlations: Bar plots of correlations with target
 
-# Get best features based on F1 score
-best_features = classifier.transform(X, evaluate="F1")
+Clustering: PCA/t-SNE scatter plots
 
-# Train final model
-model = classifier.train(best_features, y, grid=True, method='SVM', cv=5)
+Performance Tracking: Metrics vs. feature count
 
-# Evaluate performance
-results = classifier.cv_test(best_features, y, model, cv=5)
-print(f"Best F1 Score: {results['F1']}")
-```
+Confusion Matrix: Heatmaps for classification results
 
-## 📊 Visualization Gallery
+🛠️ API Reference
+Core Methods
+AIpmt(X, y): Initialize with dataset
 
-AIpmt provides publication-ready visualizations:
+fit(fs_method, ifs_method, ifs_grid, ifs_cv): Train model + feature selection
 
-- **ROC Curves**: Cross-validated ROC analysis with confidence intervals
-- **Precision-Recall Curves**: Detailed PRC analysis for imbalanced datasets  
-- **Feature Correlations**: Bar plots showing feature-target correlations
-- **Clustering Plots**: PCA/t-SNE visualizations for data exploration
-- **Performance Tracking**: Line plots showing metrics vs. number of features
-- **Confusion Matrices**: Customizable confusion matrix heatmaps
+transform(X, evaluate): Select best features
 
-## 🛠️ API Reference
+train(X, y, method, grid, cv): Train final model
 
-### Core Methods
+cv_test(X, y, model, cv): Evaluate with cross-validation
 
-#### `AIpmt(X, y)`
-Initialize the AIpmt classifier.
-- **X**: Feature matrix (pandas DataFrame)
-- **y**: Target variable (pandas Series)
+Visualization
+plot_correlation()
 
-#### `fit(fs_method, ifs_method, ifs_grid, ifs_cv)`
-Train the model with feature selection.
-- **fs_method**: Feature selection method ('ANOVA', 'Chi2')
-- **ifs_method**: Model for incremental selection ('LR', 'SVM')
-- **ifs_grid**: Enable hyperparameter tuning
-- **ifs_cv**: Cross-validation folds
+plot_cluster()
 
-#### `transform(X, evaluate)`
-Transform data using selected features.
-- **X**: Input features
-- **evaluate**: Metric for feature selection ('F1', 'ACC', 'MCC')
+plot_density()
 
-### Visualization Methods
+plot_lines()
 
-- `plot_correlation()`: Feature correlation analysis
-- `plot_cluster()`: PCA/t-SNE clustering
-- `plot_density()`: Feature distribution plots
-- `plot_lines()`: Performance vs. features
-- `plot_roc()`: ROC curve analysis
-- `plot_prc()`: Precision-recall curves
-- `plot_cm()`: Confusion matrix
+plot_roc()
 
-## 📈 Example Results
+plot_prc()
 
-```
-Best Performance Results:
-Features: 15
+plot_cm()
+
+📈 Example Results
+yaml
+Copy code
+Best Features: 12
 Accuracy: 0.956
 Sensitivity: 0.947
 Specificity: 0.965
 F1-Score: 0.954
 MCC: 0.912
-```
+🤝 Contributing
+We welcome contributions!
 
-## 🔧 Testing
+Fork the repo
 
-Run the included test script to verify installation:
+Create a branch: git checkout -b feature-name
 
-```bash
-python test_aipmt.py
-```
+Commit: git commit -m "Add new feature"
 
-For comprehensive testing with real data:
+Push: git push origin feature-name
 
-```bash
-python examples/simple_example.py
-```
+Submit a Pull Request
 
-## 🤝 Contributing
+Future Enhancements:
 
-Contributions are welcome! Here's how you can help:
+More ML models (XGBoost, NN)
 
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature-name`
-3. **Commit changes**: `git commit -m 'Add feature'`
-4. **Push to branch**: `git push origin feature-name`
-5. **Submit a Pull Request**
+Extra feature selection algorithms
 
-### Future Enhancements
-- Additional ML models (XGBoost, Neural Networks)
-- More feature selection algorithms
-- Interactive plotting with Plotly
-- Automated hyperparameter optimization
-- Support for regression tasks
+Interactive plotting (Plotly)
 
-## 📝 License
+Auto hyperparameter optimization
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Regression support
 
-## 🎓 Educational Use
+📝 License
+Licensed under the MIT License.
 
-AIpmt is designed for educational purposes and research projects. It's perfect for:
-- **Machine Learning Courses**: Hands-on feature selection and model evaluation
-- **Research Projects**: Quick prototyping and result visualization  
-- **Data Science Competitions**: Feature engineering and model comparison
-- **Medical AI Applications**: Precision medicine research workflows
+🎓 Educational Use
+AIpmt is great for:
 
-## 📞 Support
+Machine Learning courses
 
-For questions, issues, or contributions:
-- **GitHub Issues**: [Report bugs or request features](https://github.com/yourusername/AIpmt/issues)
-- **Discussions**: [Ask questions or share ideas](https://github.com/yourusername/AIpmt/discussions)
+Research projects
 
-## 🙏 Acknowledgments
+Medical AI prototyping
 
-- Developed as part of undergraduate Computer Science research
-- Built on top of scikit-learn, pandas, and matplotlib
-- Special thanks to the open-source community
+Data science competitions
 
----
+📞 Support
+Open an issue: GitHub Issues
 
-**Made with ❤️ for the machine learning community**
+Join discussions: GitHub Discussions
+
+🙏 Acknowledgments
+Developed as part of undergraduate CS research
+
+Built on scikit-learn, pandas, matplotlib
+
+Thanks to the open-source community
