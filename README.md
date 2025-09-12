@@ -13,7 +13,7 @@ It is designed for **students, researchers, and practitioners** who want to quic
 **Farhan Labib**  
 - Undergraduate Computer Science Researcher  
 - Passionate about Machine Learning, Data Science, and Precision Medicine  
-- [LinkedIn](https://www.linkedin.com) • [GitHub](https://github.com/yourusername)  
+- [LinkedIn]([https://www.linkedin.com/](https://www.linkedin.com/in/farhan-labib-edu/)) • [GitHub](https://github.com/Farhan-Labib-afk/)  
 
 ---
 
@@ -139,13 +139,14 @@ plot_cm()
 yaml
 Copy code
 Best Features: 12
-Accuracy: 0.956
-Sensitivity: 0.947
-Specificity: 0.965
-F1-Score: 0.954
-MCC: 0.912
+Performance Metrics:
+   Accuracy   : 0.865
+   Sensitivity: 0.848
+   Specificity: 0.881
+   MCC        : 0.73
+   F1-Score   : 0.862
 🤝 Contributing
-We welcome contributions!
+Contributions are welcome!
 
 Fork the repo
 
@@ -183,14 +184,9 @@ Medical AI prototyping
 
 Data science competitions
 
-📞 Support
-Open an issue: GitHub Issues
-
-Join discussions: GitHub Discussions
 
 🙏 Acknowledgments
 Developed as part of undergraduate CS research
 
 Built on scikit-learn, pandas, matplotlib
 
-Thanks to the open-source community
