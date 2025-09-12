@@ -1,0 +1,7 @@
+README.md
+setup.py
+aipmt.egg-info/PKG-INFO
+aipmt.egg-info/SOURCES.txt
+aipmt.egg-info/dependency_links.txt
+aipmt.egg-info/requires.txt
+aipmt.egg-info/top_level.txt
