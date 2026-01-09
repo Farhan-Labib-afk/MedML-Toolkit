@@ -164,4 +164,6 @@ The app supports CSV upload and includes a built-in sample dataset. It runs feat
 
 ## Author
 
-Farhan Labib
+Farhan Labib  
+LinkedIn: https://www.linkedin.com/in/farhan-labib-edu/  
+Email: farhan.labib@ucalgary.ca
