@@ -1,212 +1,166 @@
-# AIpmt: AI Precision Medicine Toolkit
+# MedML Toolkit
 
-[![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Predictive modeling and feature analysis for precision medicine workflows with built-in visualization and cross-validation utilities.
 
-AIpmt is a comprehensive Python toolkit designed for **predictive modeling and feature analysis** in precision medicine applications. Built with flexibility, visualization, and educational use in mind, it helps students, researchers, and practitioners quickly test classification models, evaluate features, and visualize results with minimal setup.
+## Project Structure
 
-## 🚀 Features
+- `src/medml_toolkit/`: core package
+- `src/medml_toolkit/core.py`: MedMLToolkit class implementation
+- `app.py`: Streamlit web UI
+- `examples/`: runnable demo scripts
+- `outputs/`: generated plots and artifacts
+- `requirements.txt`: Python dependencies
+- `setup.py`: package metadata
+- `pyproject.toml`: build configuration
 
-- **Multiple ML Models**: Logistic Regression, SVM (easily extendable)
-- **Advanced Feature Selection**: ANOVA F-test, Chi-squared, incremental feature selection
-- **Comprehensive Metrics**: Accuracy, Sensitivity, Specificity, MCC, F1-score
-- **Rich Visualizations**: 
-  - ROC and Precision-Recall curves with cross-validation
-  - Feature correlation analysis
-  - PCA/t-SNE clustering plots
-  - Confusion matrices
-  - Feature selection performance tracking
-- **Cross-Validation**: Built-in k-fold cross-validation with stratification
-- **Easy Integration**: Clean API designed for research workflows
+## Dataset
 
-## 📦 Installation
+Bring your own tabular dataset (features in a pandas DataFrame, labels in a pandas Series). The `examples/breast_cancer_demo.py` script uses the built-in Breast Cancer Wisconsin dataset from scikit-learn.
 
-### Prerequisites
-- Python 3.8 or higher
-- pip package manager
+## Key Takeaways
 
-### Quick Install
+- Streamlines feature selection, model training, and evaluation into a single API.
+- Provides reusable plotting helpers for common ML diagnostics.
+- Uses a clean, reusable project layout suitable for research and portfolio work.
 
-1. **Clone the repository:**
-```bash
-git clone https://github.com/yourusername/AIpmt.git
-cd AIpmt
-```
+## Models
 
-2. **Create virtual environment:**
-```bash
-python -m venv aipmt_env
+### Logistic Regression
+- Scikit-learn `LogisticRegression` with configurable regularization
+- Grid search support via `GridSearchCV`
 
-# Windows
-aipmt_env\Scripts\activate
+### Support Vector Machine (RBF)
+- Scikit-learn `SVC` with probability estimates enabled
+- Grid search for `C` and `gamma`
 
-# macOS/Linux
-source aipmt_env/bin/activate
-```
-
-3. **Install dependencies:**
-```bash
-pip install -r requirements.txt
-pip install -e .
-```
-
-## 🔬 Quick Start
-
-### Basic Usage
+## Minimal API Example
 
 ```python
 import pandas as pd
 from sklearn.datasets import load_breast_cancer
-from aipmt import AIpmt
+from medml_toolkit import MedMLToolkit
 
-# Load dataset
 data = load_breast_cancer()
 X = pd.DataFrame(data.data, columns=data.feature_names)
-y = pd.Series(data.target)
+y = pd.Series(data.target, name="target")
 
-# Initialize AIpmt
-classifier = AIpmt(X, y)
-
-# Fit with feature selection
-classifier.fit(fs_method="ANOVA", ifs_method="LR", ifs_grid=True, ifs_cv=5)
-
-# Generate visualizations
-classifier.plot_correlation(X, y)
-classifier.plot_cluster(X, y, cluster='PCA')
-classifier.plot_lines(classifier.ifs_results)
+toolkit = MedMLToolkit(X, y)
+toolkit.fit(fs_method="ANOVA", ifs_method="LR", ifs_grid=False, ifs_cv=5)
+best_features = toolkit.transform(X, evaluate="F1")
+model = toolkit.train(best_features, y, method="LR", grid=False, cv=5)
+results = toolkit.cv_test(best_features, y, model, cv=5)
+print(results)
 ```
 
-### Advanced Usage
+## Skills Demonstrated
 
-```python
-# Custom feature selection and model training
-classifier.fit(
-    fs_method="Chi2",           # Feature selection method
-    ifs_method="SVM",           # Model for incremental selection
-    ifs_grid=True,              # Enable grid search
-    ifs_cv=10                   # 10-fold cross-validation
-)
+- Feature selection with ANOVA F-test and Chi-squared
+- Stratified k-fold cross-validation
+- Model evaluation metrics (ACC, SN, SP, MCC, F1)
+- Diagnostic visualizations (ROC, PRC, correlation, clustering)
 
-# Get best features based on F1 score
-best_features = classifier.transform(X, evaluate="F1")
-
-# Train final model
-model = classifier.train(best_features, y, grid=True, method='SVM', cv=5)
-
-# Evaluate performance
-results = classifier.cv_test(best_features, y, model, cv=5)
-print(f"Best F1 Score: {results['F1']}")
-```
-
-## 📊 Visualization Gallery
-
-AIpmt provides publication-ready visualizations:
-
-- **ROC Curves**: Cross-validated ROC analysis with confidence intervals
-- **Precision-Recall Curves**: Detailed PRC analysis for imbalanced datasets  
-- **Feature Correlations**: Bar plots showing feature-target correlations
-- **Clustering Plots**: PCA/t-SNE visualizations for data exploration
-- **Performance Tracking**: Line plots showing metrics vs. number of features
-- **Confusion Matrices**: Customizable confusion matrix heatmaps
-
-## 🛠️ API Reference
-
-### Core Methods
-
-#### `AIpmt(X, y)`
-Initialize the AIpmt classifier.
-- **X**: Feature matrix (pandas DataFrame)
-- **y**: Target variable (pandas Series)
-
-#### `fit(fs_method, ifs_method, ifs_grid, ifs_cv)`
-Train the model with feature selection.
-- **fs_method**: Feature selection method ('ANOVA', 'Chi2')
-- **ifs_method**: Model for incremental selection ('LR', 'SVM')
-- **ifs_grid**: Enable hyperparameter tuning
-- **ifs_cv**: Cross-validation folds
-
-#### `transform(X, evaluate)`
-Transform data using selected features.
-- **X**: Input features
-- **evaluate**: Metric for feature selection ('F1', 'ACC', 'MCC')
-
-### Visualization Methods
-
-- `plot_correlation()`: Feature correlation analysis
-- `plot_cluster()`: PCA/t-SNE clustering
-- `plot_density()`: Feature distribution plots
-- `plot_lines()`: Performance vs. features
-- `plot_roc()`: ROC curve analysis
-- `plot_prc()`: Precision-recall curves
-- `plot_cm()`: Confusion matrix
-
-## 📈 Example Results
-
-```
-Best Performance Results:
-Features: 15
-Accuracy: 0.956
-Sensitivity: 0.947
-Specificity: 0.965
-F1-Score: 0.954
-MCC: 0.912
-```
-
-## 🔧 Testing
-
-Run the included test script to verify installation:
+## Quick Start
 
 ```bash
-python test_aipmt.py
+git clone https://github.com/<your-username>/medml-toolkit.git
+cd medml-toolkit
+python -m venv medml_env
 ```
 
-For comprehensive testing with real data:
+## Setup
+
+A virtual environment is recommended to keep dependencies isolated.
+
+### Windows (PowerShell)
+
+```powershell
+.\medml_env\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m pip install -e .
+```
+
+### macOS
 
 ```bash
-python examples/simple_example.py
+source medml_env/bin/activate
+python3 -m pip install -r requirements.txt
+python3 -m pip install -e .
 ```
 
-## 🤝 Contributing
+### Linux
 
-Contributions are welcome! Here's how you can help:
+```bash
+source medml_env/bin/activate
+python3 -m pip install -r requirements.txt
+python3 -m pip install -e .
+```
 
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature-name`
-3. **Commit changes**: `git commit -m 'Add feature'`
-4. **Push to branch**: `git push origin feature-name`
-5. **Submit a Pull Request**
+## Run Demos
 
-### Future Enhancements
-- Additional ML models (XGBoost, Neural Networks)
-- More feature selection algorithms
-- Interactive plotting with Plotly
-- Automated hyperparameter optimization
-- Support for regression tasks
+Toy dataset:
 
-## 📝 License
+```bash
+python examples/toy_demo.py
+```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Real dataset (Breast Cancer Wisconsin):
 
-## 🎓 Educational Use
+```bash
+python examples/breast_cancer_demo.py
+```
 
-AIpmt is designed for educational purposes and research projects. It's perfect for:
-- **Machine Learning Courses**: Hands-on feature selection and model evaluation
-- **Research Projects**: Quick prototyping and result visualization  
-- **Data Science Competitions**: Feature engineering and model comparison
-- **Medical AI Applications**: Precision medicine research workflows
+Outputs:
+- Plots saved in `outputs/breast_cancer/`
+- Metrics printed to console
 
-## 📞 Support
+## Web UI
 
-For questions, issues, or contributions:
-- **GitHub Issues**: [Report bugs or request features](https://github.com/yourusername/AIpmt/issues)
-- **Discussions**: [Ask questions or share ideas](https://github.com/yourusername/AIpmt/discussions)
+Launch the Streamlit app:
 
-## 🙏 Acknowledgments
+```bash
+python -m streamlit run app.py
+```
 
-- Developed as part of undergraduate Computer Science research
-- Built on top of scikit-learn, pandas, and matplotlib
-- Special thanks to the open-source community
+The app supports CSV upload and includes a built-in sample dataset. It runs feature selection, trains a model, and displays metrics and plots.
 
----
+## CSV Rules
 
-**Made with ❤️ for the machine learning community**
+- The target column must represent discrete classes for classification (e.g., 0/1 or category labels).
+- All feature columns must be numeric.
+- If your target is continuous, enable "Auto-bin continuous targets" in the UI to convert it into quantile bins.
+- Prefer label columns with a small number of unique values (typically 2-10).
+- Example: In the sample dataset, `mean radius` is a feature and should not be used as the target.
+
+## Latest Run (Example)
+
+- Accuracy: 0.981
+- Sensitivity: 0.992
+- Specificity: 0.962
+- F1-Score: 0.985
+- MCC: 0.959
+
+## Output Screenshots
+
+### Feature Correlations
+
+![Feature Correlations](outputs/breast_cancer/correlations.png)
+
+### Feature Selection Curve
+
+![Feature Selection](outputs/breast_cancer/feature_selection.png)
+
+### PCA Cluster
+
+![PCA Cluster](outputs/breast_cancer/pca.png)
+
+### ROC Curve
+
+![ROC Curve](outputs/breast_cancer/roc.png)
+
+### Precision-Recall Curve
+
+![Precision-Recall Curve](outputs/breast_cancer/prc.png)
+
+## Author
+
+Farhan Labib
