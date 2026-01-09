@@ -8,6 +8,7 @@ Predictive modeling and feature analysis for precision medicine workflows with b
 - `src/medml_toolkit/core.py`: MedMLToolkit class implementation
 - `app.py`: Streamlit web UI
 - `examples/`: runnable demo scripts
+- `assets/`: curated screenshots for the README
 - `outputs/`: generated plots and artifacts
 - `requirements.txt`: Python dependencies
 - `setup.py`: package metadata
@@ -143,23 +144,23 @@ The app supports CSV upload and includes a built-in sample dataset. It runs feat
 
 ### Feature Correlations
 
-![Feature Correlations](outputs/breast_cancer/correlations.png)
+![Feature Correlations](assets/breast_cancer/correlations.png)
 
 ### Feature Selection Curve
 
-![Feature Selection](outputs/breast_cancer/feature_selection.png)
+![Feature Selection](assets/breast_cancer/feature_selection.png)
 
 ### PCA Cluster
 
-![PCA Cluster](outputs/breast_cancer/pca.png)
+![PCA Cluster](assets/breast_cancer/pca.png)
 
 ### ROC Curve
 
-![ROC Curve](outputs/breast_cancer/roc.png)
+![ROC Curve](assets/breast_cancer/roc.png)
 
 ### Precision-Recall Curve
 
-![Precision-Recall Curve](outputs/breast_cancer/prc.png)
+![Precision-Recall Curve](assets/breast_cancer/prc.png)
 
 ## Author
 

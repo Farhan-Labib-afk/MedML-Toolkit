@@ -32,6 +32,8 @@ ENV/
 env/
 .venv/
 .ipynb_checkpoints
+aipmt_env/
+medml_env/
 
 # PyInstaller
 *.manifest
@@ -92,6 +94,15 @@ venv.bak/
 *.pdf
 *.svg
 *.joblib
+outputs/
+
+# Keep curated assets in repo
+!assets/
+!assets/**/
+!assets/**/*.png
+!assets/**/*.jpg
+!assets/**/*.jpeg
+!assets/**/*.svg
 
 # Mac / Windows / Linux system files
 .DS_Store
